@@ -1,0 +1,3 @@
+[submodule "sqids-blocklist"]
+	path = sqids-blocklist
+	url = https://github.com/sqids/sqids-blocklist.git
