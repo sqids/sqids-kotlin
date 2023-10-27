@@ -16,15 +16,23 @@ sourceSets {
         kotlin.setSrcDirs(emptyList<String>())
         resources.setSrcDirs(listOf("sqids-blocklist/output"))
     }
-    create("generated")
+    val generated = create("generated")
     main {
-        val generated = sourceSets.named("generated").get()
+        compileClasspath += generated.output
+        runtimeClasspath += generated.output
+    }
+    test {
         compileClasspath += generated.output
         runtimeClasspath += generated.output
     }
 }
 
-dependencies { testImplementation("org.jetbrains.kotlin:kotlin-test:1.8.10") }
+dependencies {
+    testImplementation("io.kotest:kotest-assertions-core:5.6.2")
+    testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
+    testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.8.10")
+}
 
 tasks.named("compileGeneratedKotlin") { dependsOn("blocklist") }
 
