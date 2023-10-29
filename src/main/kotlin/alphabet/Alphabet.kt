@@ -9,11 +9,14 @@ class Alphabet(private var chars: CharArray) : CharSequence {
     val prefix: String
         get() = prefixChar.toString()
 
-    private val separatorChar: Char
+    val separatorChar: Char
         get() = first()
 
     val separator: String
         get() = separatorChar.toString()
+
+    val workingChars: CharSequence
+        get() = drop(1)
 
     private var isReversed = false
 

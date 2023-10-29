@@ -28,3 +28,12 @@ fun <A> Alphabet.padTo(buffer: A, length: Int): A where A : Appendable, A : Char
                 append(shuffle().take(charsToTake))
             }
         }
+
+fun <T> Alphabet.splitToChunks(chars: CharSequence, transform: Alphabet.(String) -> T): List<T> {
+    val chunkIterator = ChunkIterator(chars.peekingIterator(), this)
+    val result = mutableListOf<T>()
+    for (chunk in chunkIterator) {
+        result.add(transform(chunk))
+    }
+    return result
+}
