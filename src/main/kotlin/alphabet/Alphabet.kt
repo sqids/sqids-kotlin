@@ -1,7 +1,21 @@
-package org.sqids
+package org.sqids.alphabet
 
 class Alphabet(private var chars: CharArray) : CharSequence {
     constructor(initialState: String) : this(initialState.toCharArray())
+
+    private val prefixChar: Char
+        get() = if (isReversed) last() else first()
+
+    val prefix: String
+        get() = prefixChar.toString()
+
+    private val separatorChar: Char
+        get() = first()
+
+    val separator: String
+        get() = separatorChar.toString()
+
+    private var isReversed = false
 
     override val length: Int
         get() = chars.size
@@ -10,6 +24,15 @@ class Alphabet(private var chars: CharArray) : CharSequence {
 
     override fun subSequence(startIndex: Int, endIndex: Int): CharSequence =
         chars.concatToString(startIndex, endIndex)
+
+    fun pivotOn(pivot: Int): Alphabet = apply {
+        chars = (chars.drop(pivot) + chars.take(pivot)).toCharArray()
+    }
+
+    fun reverse(): Alphabet = apply {
+        chars.reverse()
+        isReversed = !isReversed
+    }
 
     /** This is a consistent shuffle. It always produces the same result given the same input. */
     fun shuffle(): Alphabet = apply {

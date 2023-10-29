@@ -1,5 +1,7 @@
 package org.sqids
 
+import org.sqids.alphabet.Alphabet
+
 const val MIN_ALPHABET_LENGTH = 3
 const val MIN_LENGTH_LIMIT = 255
 const val MIN_BLOCK_LIST_WORD_LENGTH = 3
