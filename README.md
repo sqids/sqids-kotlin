@@ -1,15 +1,80 @@
 # [Sqids Kotlin](https://sqids.org/kotlin)
 
-Sqids (pronounced "squids") is a small library that lets you generate YouTube-looking IDs from numbers. It's good for link shortening, fast & URL-safe ID generation and decoding back into numbers for quicker database lookups.
+[Sqids](https://sqids.org/kotlin) (*pronounced "squids"*) is a small library that lets you **generate unique IDs from
+numbers**. It's good for link shortening, fast & URL-safe ID generation and decoding back into numbers for quicker
+database lookups.
+
+Features:
+
+- **Encode multiple numbers** - generate short IDs from one or several non-negative numbers
+- **Quick decoding** - easily decode IDs back into numbers
+- **Unique IDs** - generate unique IDs by shuffling the alphabet once
+- **ID padding** - provide minimum length to make IDs more uniform
+- **URL safe** - auto-generated IDs do not contain common profanity
+- **Randomized output** - Sequential input provides nonconsecutive IDs
+- **Many implementations** - Support for [40+ programming languages](https://sqids.org/)
+
+## Use-cases
+
+Good for:
+
+- Generating IDs for public URLs (eg: link shortening)
+- Generating IDs for internal systems (eg: event tracking)
+- Decoding for quicker database lookups (eg: by primary keys)
+
+Not good for:
+
+- Sensitive data (this is not an encryption library)
+- User IDs (can be decoded revealing user count)
+  Java 8 or higher is required.
 
 ## Getting started
 
-@todo
+Download and Import Sqids via:
+
+```kotlin
+import org.sqids.Sqids
+```
 
 ## Examples
 
-@todo
+Simple encode & decode:
 
-## License
+```kotlin
+val sqids = Sqids()
+val id = sqids.encode(listOf(1, 2, 3)) // "86Rf07"
+val numbers = sqids.decode(id) // listOf(1, 2, 3)
+```
+
+> **Note**
+> 🚧 Because of the algorithm's design, **multiple IDs can decode back into the same sequence of numbers**. If it's
+> important to your design that IDs are canonical, you have to manually re-encode decoded numbers and check that the
+> generated ID matches.
+
+Enforce a *minimum* length for IDs:
+
+```kotlin
+val sqids = Sqids(minLength = 10)
+val id = sqids.encode(listOf(1, 2, 3)) // "86Rf07xd4z"
+val numbers = sqids.decode(id) // [1, 2, 3]
+```    
+
+Randomize IDs by providing a custom alphabet:
+
+```kotlin
+val sqids = Sqids(alphabet = "FxnXM1kBN6cuhsAvjW3Co7l2RePyY8DwaU04Tzt9fHQrqSVKdpimLGIJOgb5ZE")
+val id = sqids.encode(listOf(1, 2, 3)) // "B4aajs"
+val numbers = sqids.decode(id) // [1, 2, 3]
+```
+
+Prevent specific words from appearing anywhere in the auto-generated IDs:
+
+```kotlin
+val sqids = Sqids(blocklist = setOf("86Rf07"))
+val id = sqids.encode(listOf(1, 2, 3)) // "se8ojk"
+val numbers = sqids.decode(id) // [1, 2, 3]
+```
+
+## 📝 License
 
 [MIT](LICENSE)
