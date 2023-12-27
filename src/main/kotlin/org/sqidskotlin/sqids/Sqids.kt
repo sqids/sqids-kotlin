@@ -653,15 +653,15 @@ class Sqids(private var alphabet: String = DEFAULT_ALPHABET, private val minLeng
      * 	- An n-number of attempts has been made to re-generated the ID, where n is alphabet length + 1
      *
      * @return the generated ID
+     * @throws IllegalArgumentException if one of the numbers passed is smaller than 0 or greater than `maxValue()`
+     * @throws IllegalArgumentException if n attempts have been made to re-generated the ID, where n is alphabet length + 1
      */
     fun encode(numbers: List<Long>): String {
         if (numbers.isEmpty()) {
             return ""
         }
-        val inRangeNumbers = numbers.filter { n -> n >= 0 }
-        if(inRangeNumbers.size != numbers.size) {
-            throw RuntimeException("Encoding supports numbers between 0 and " + Long.MAX_VALUE)
-        }
+
+        require(numbers.all { it >= 0 }) { "Encoding supports numbers between 0 and ${Long.MAX_VALUE}" }
         return encodeNumbers(numbers)
     }
 
@@ -672,9 +672,8 @@ class Sqids(private var alphabet: String = DEFAULT_ALPHABET, private val minLeng
      * @return the generated ID
      */
     private fun encodeNumbers(numbers: List<Long>, increment: Int = 0): String {
-        if (increment > alphabet.length) {
-            throw RuntimeException("Reached max attempts to re-generate the ID")
-        }
+
+        require(increment <= alphabet.length) { "Reached max attempts to re-generate the ID" }
 
         var offset = numbers.size
         for (i in numbers.indices) {
