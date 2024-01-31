@@ -1,7 +1,14 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.0"
     id("java-library")
+    id("maven-publish")
+    id("signing")
 }
+
+var rootArtifactId = "sqids-kotlin"
+var projectUrl = "https://sqids.org/kotlin"
+group = "org.sqids"
+version = "0.1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -11,12 +18,67 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
-tasks.named('test', Test) {
+tasks.named("test", Test) {
     useJUnitPlatform()
 
-    maxHeapSize = '1G'
+    maxHeapSize = "1G"
 
     testLogging {
         showStandardStreams = true
+    }
+}
+
+publishing {
+    publications {
+
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = rootArtifactId
+            version = version
+            from components.java
+            pom {
+                name = "Sqids"
+                description = "Generate short YouTube-looking IDs from numbers."
+                url = projectUrl
+                properties = [
+                        "parent.groupId": "org.sonatype.oss",
+                        "parent.artifactId": "oss-parent",
+                        "parent.version": "7"
+                ]
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://github.com/sqids/sqids-kotlin/blob/main/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "kevinxmorales"
+                        name = "Kevin Morales"
+                        email = "kevinm2052@gmail.com"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/sqids/sqids-kotlin.git"
+                    developerConnection = "scm:git:ssh://git@github.com:sqids/sqids-kotlin.git"
+                    url = projectUrl
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ?
+                    "https://s01.oss.sonatype.org/content/repositories/snapshots/" :
+                    "https://s01.oss.sonatype.org/content/repositories/releases/"
+            credentials {
+                username "${System.getenv("SONATYPE_USERNAME")}"
+                password "${System.getenv("SONATYPE_PASSWORD")}"
+            }
+        }
+    }
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
     }
 }
