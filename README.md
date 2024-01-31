@@ -29,8 +29,26 @@ Not good for:
 
 Install Sqids via:
 
+Gradle
+```
+implementation 'org.sqids:sqids-kotlin:0.1.0'
+```
+
+or 
+
+Maven
+```
+<dependency>
+  <groupId>org.sqids</groupId>
+  <artifactId>sqids-kotlin</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+Import into project
+
 ```kotlin
-import org.sqidskotlin.sqids
+import org.sqids.Sqids
 ```
 
 ## 👩‍💻 Examples
