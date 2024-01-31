@@ -1,4 +1,4 @@
-package org.sqidskotlin.sqids
+package org.sqids
 
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

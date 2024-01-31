@@ -1,4 +1,4 @@
-package org.sqidskotlin.sqids
+package org.sqids
 
 const val MINIMUM_LENGTH = 3
 const val MIN_LENGTH_LIMIT = 255
