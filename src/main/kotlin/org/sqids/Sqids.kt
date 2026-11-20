@@ -573,7 +573,7 @@ class Sqids(private var alphabet: String = DEFAULT_ALPHABET, private val minLeng
             throw IllegalArgumentException("Alphabet cannot contain multibyte characters")
         }
 
-        if(alphabet.length < 3) {
+        if(alphabet.length < MINIMUM_LENGTH) {
             throw IllegalArgumentException("Alphabet length must be at least $MINIMUM_LENGTH")
         }
 
